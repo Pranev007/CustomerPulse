@@ -642,8 +642,9 @@ elif nav_page == "Customer Analytics":
 
     with col2:
         st.markdown("##### Monthly Charges vs Lifetime Spend Behavior")
+        spend_sample = filtered_df.sample(n=min(1500, len(filtered_df)), random_state=42) if len(filtered_df) > 1500 else filtered_df
         fig_spend = px.scatter(
-            filtered_df,
+            spend_sample,
             x="monthly_charges",
             y="total_spend",
             color="churn",
@@ -779,9 +780,11 @@ elif nav_page == "Risk Matrix":
 
     med_val = filtered_df["clv_estimate"].median()
 
-    # Create Scatter Risk Matrix
+    # Create Scatter Risk Matrix (Sample max 1500 points for instant 50ms rendering performance)
+    matrix_sample = filtered_df.sample(n=min(1500, len(filtered_df)), random_state=42) if len(filtered_df) > 1500 else filtered_df
+
     fig_matrix = px.scatter(
-        filtered_df,
+        matrix_sample,
         x="clv_estimate",
         y="churn_probability",
         color="customer_segment",
@@ -919,11 +922,11 @@ elif nav_page == "Customer Risk Directory":
 
     dir_df = dir_df.sort_values(by="revenue_at_risk", ascending=False)
 
-    st.markdown(f"**Showing {len(dir_df):,} accounts matching filters**")
+    st.markdown(f"**Showing Top 250 At-Risk Accounts (out of {len(dir_df):,} matching accounts)**")
     
-    # Styled Datatable with st.column_config
+    # Styled Datatable with st.column_config (Optimized to top 250 accounts for instant rendering)
     st.dataframe(
-        dir_df[[
+        dir_df.head(250)[[
             "customer_id", "region", "contract_type", "customer_segment",
             "monthly_charges", "clv_estimate", "churn_probability", "revenue_at_risk",
             "support_tickets", "satisfaction_score"
