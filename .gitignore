@@ -1,0 +1,30 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Data files (keep raw placeholder/gitignore, tracking large files if needed)
+data/processed/*.db
+data/processed/*.sqlite
+
+# Model checkpoints
+models/*.pkl
+models/*.joblib
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Streamlit Cache
+.streamlit/
+*.log
+
+# OS Generated
+.DS_Store
+Thumbs.db
